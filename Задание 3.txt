@@ -1,0 +1,92 @@
+using System;
+
+namespace DateClass
+{
+    /// Класс Date инкапсулирует дату
+    public class Date
+    {
+        public int Day { get; private set; }
+        public int Month { get; private set; }
+        public int Year { get; private set; }
+
+        // Конструктор класса Date
+        public Date(int day, int month, int year)
+        {
+            Day = day;
+            Month = month;
+            Year = year;
+        }
+
+        /// Перегрузка оператора + для добавления указанного количества дней к дате
+        public static Date operator +(Date date, int days)
+        {
+            return date.AddDays(days);
+        }
+
+        /// Перегрузка оператора - для вычитания указанного количества дней из даты
+        public static Date operator -(Date date, int days)
+        {
+            return date.AddDays(-days);
+        }
+
+        /// Перегрузка оператора == для сравнения двух объектов класса Date
+        public static bool operator ==(Date date1, Date date2)
+        {
+            if (ReferenceEquals(date1, date2))
+                return true;
+            if (ReferenceEquals(date1, null) || ReferenceEquals(date2, null))
+                return false;
+            return date1.Equals(date2);
+        }
+
+        /// Перегрузка оператора != для сравнения двух объектов класса Date
+        public static bool operator !=(Date date1, Date date2)
+        {
+            return !(date1 == date2);
+        }
+
+        /// Метод для добавления указанного количества дней к дате
+        public Date AddDays(int days)
+        {
+            DateTime dateTime = new DateTime(Year, Month, Day);
+            DateTime newDateTime = dateTime.AddDays(days);
+            return new Date(newDateTime.Day, newDateTime.Month, newDateTime.Year);
+        }
+
+        /// Метод для вывода даты в формате "день.месяц.год"
+        public string GetDate()
+        {
+            return $"{Day:D2}.{Month:D2}.{Year:D4}";
+        }
+        
+        /// Метод для вывода даты в формате "месяц/день/год"
+        public string GetDate2()
+        {
+            return $"{Month:D2}/{Day:D2}/{Year:D4}";
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /// Создание объекта класса Date
+            Date date = new Date(13, 9, 2022);
+
+            /// Пример использования перегруженных операторов
+            Date newDate = date + 7; // добавление 7 дней к дате
+            Date newerDate = newDate - 3; // вычитание 3 дней из даты
+
+            /// Вывод даты в разных форматах
+            Console.WriteLine(date.GetDate()); // формат "день.месяц.год"
+            Console.WriteLine(newDate.GetDate2()); // формат "месяц/день/год"
+
+            /// Пример сравнения объектов класса Date
+            Console.WriteLine(date == newDate); // false
+            Console.WriteLine(date != newDate); // true
+
+            Console.ReadLine();
+        }
+    }
+}
+
